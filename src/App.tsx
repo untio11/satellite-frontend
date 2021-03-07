@@ -1,13 +1,29 @@
 import logo from './logo.svg';
 import './App.css';
 
+class Human {
+  name: string;
+  age: number;
+
+  constructor(name: string, age: number) {
+    this.name = name;
+    this.age = age;
+  }
+}
+
 function App() {
+  let hans: Human = new Human("Hans", 15);
+  let peter = new Human("Peter", 33);
+
   return (
     <div className="App">
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
         <p>
-          Edit <code>src/App.js</code> and save to reload.
+          {hans.name}: Hello World!
+        </p>
+        <p>
+          {peter.name}: Hallo daar. Ik ben {peter.age} jaar oud.
         </p>
         <a
           className="App-link"
