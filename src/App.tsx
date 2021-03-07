@@ -1,6 +1,6 @@
 import logo from './logo.svg';
 import './App.css';
-
+import Button from './react-redux-button.js';
 class Human {
   name: string;
   age: number;
@@ -33,6 +33,7 @@ function App() {
         >
           Learn React
         </a>
+        <Button />
       </header>
     </div>
   );
