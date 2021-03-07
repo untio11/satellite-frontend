@@ -1,3 +1,12 @@
+# Gegroet
+De basic, auto-generated readme staat hierbeneden voor reference.
+
+Voor je development environment heb je VSCode en npm/node.js. Volgens mij is dat alles.
+
+Volgens mij werken de dingen zoals React/Redux en TypeScript al, maar ik denk dat de project layout nog niet helemaal ideaal is. Daar kunnen we nog wel naar kijken though.
+
+---
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
