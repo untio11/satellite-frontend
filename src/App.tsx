@@ -1,6 +1,6 @@
-import logo from './logo.svg';
-import './App.css';
-import Button from './react-redux-button.js';
+import logo from "./logo.svg";
+import "./App.css";
+import Button from "./react-redux-button.js";
 class Human {
   name: string;
   age: number;
@@ -19,9 +19,7 @@ function App() {
     <div className="App">
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          {hans.name}: Hello World!
-        </p>
+        <p>{hans.name}: Hello World!</p>
         <p>
           {peter.name}: Hallo daar. Ik ben {peter.age} jaar oud.
         </p>
