@@ -1,4 +1,4 @@
-import '../style/Header.less';
+import '../style/Header.css';
 
 function Header() {
    return <div className="header-container"></div>;

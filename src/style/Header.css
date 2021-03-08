@@ -1,9 +1,7 @@
-@import './Theme.less';
-
 .header-container {
    display: flex;
    flex-direction: row;
    height: 30px;
    width: 100%;
-   background-color: @primary-color;
+   background-color: var(--primary-color);
 }
