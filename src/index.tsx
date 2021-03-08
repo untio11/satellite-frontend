@@ -5,18 +5,21 @@ import './style/Theme.css';
 import App from './components/App';
 import reportWebVitals from './reportWebVitals';
 
-import { createStore } from 'redux';
+
 import { Provider } from 'react-redux';
-import reducer from './reducers/reducer';
 import Client from '@satellite-earth/client';
 import { Earth } from '@satellite-earth/core';
-
-const store = createStore(reducer);
+import store  from './store';
+import {Contact} from './api/satellite';
 
 async function connect() {
    const earth = new Earth();
-   const client = new Client(earth);
-   earth.connect();
+   const client = new Client(earth, (event: string, data: Contact, params: string[]) => {
+      console.log(data);
+      console.log(event);
+      console.log(params);
+   });
+   client.contact("satellite", {endpoint: "https://api.satellite.earth/world"});
 }
 
 connect();
