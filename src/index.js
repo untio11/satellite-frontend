@@ -15,8 +15,12 @@ const store = createStore(reducer);
 
 async function connect() {
    const earth = new Earth();
-   const client = new Client(earth);
-   earth.connect();
+   const client = new Client(earth, (event, data, params) => {
+      console.log(event, data, params);
+   });
+   client.contact('satellite', {
+      endpoint: 'https://api.satellite.earth/world',
+   });
 }
 
 connect();
