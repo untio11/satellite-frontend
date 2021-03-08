@@ -85,6 +85,7 @@ export interface Epoch extends Torrent {
     alpha: number,
     finalized: boolean,
     compressed: Uint8Array,
+    included: {[uuid: string]: SignedContent}
 }
 
 export interface Contact {
