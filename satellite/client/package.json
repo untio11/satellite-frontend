@@ -1,0 +1,22 @@
+{
+  "name": "@satellite-earth/client",
+  "version": "2.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "@satellite-earth/epoch": "^2.0.0",
+    "@satellite-earth/signal": "^2.0.0",
+    "@satellite-earth/torrent": "^2.0.0",
+    "end-of-stream": "1.4.1",
+    "localforage": "1.7.3",
+    "webtorrent": "0.107.0"
+  },
+  "author": {
+    "name": "Stuart Bowman",
+    "email": "sbowman@satellite.earth"
+  },
+  "license": "ISC"
+}
