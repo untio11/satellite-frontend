@@ -5,24 +5,8 @@ import './style/Theme.css';
 import App from './components/App';
 import reportWebVitals from './reportWebVitals';
 
-
 import { Provider } from 'react-redux';
-import Client from '@satellite-earth/client';
-import { Earth } from '@satellite-earth/core';
-import store  from './store';
-import {Contact} from './api/satellite';
-
-async function connect() {
-   const earth = new Earth();
-   const client = new Client(earth, (event: string, data: Contact, params: string[]) => {
-      console.log(data);
-      console.log(event);
-      console.log(params);
-   });
-   client.contact("satellite", {endpoint: "https://api.satellite.earth/world"});
-}
-
-connect();
+import store from './store';
 
 ReactDOM.render(
    <React.StrictMode>
