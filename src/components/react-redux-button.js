@@ -1,6 +1,12 @@
+<<<<<<< HEAD:src/react-redux-button.js
 import React from 'react'
 import { connect } from 'react-redux'
 import { sayHello } from './actions/sayHello'
+=======
+import React from 'react';
+import { connect } from 'react-redux';
+import { sayHello } from '../actions/sayHello'
+>>>>>>> 8061d35... (linting) restructured project:src/components/react-redux-button.js
 
 // Q: How to make a file like this one in TypeScript?
 let Button = ({ whatsUp, stateObject, saySomething }) => (
@@ -24,4 +30,12 @@ const mapDispatchToProps = (dispatch) => ({
     },
 })
 
+<<<<<<< HEAD:src/react-redux-button.js
 export default connect(mapStateToProps, mapDispatchToProps)(Button)
+=======
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(Button);
+>>>>>>> 8061d35... (linting) restructured project:src/components/react-redux-button.js

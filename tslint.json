@@ -1,0 +1,74 @@
+{
+    "defaultSeverity": "error",
+    "extends": ["tslint:recommended", "tslint-config-prettier"],
+    "jsRules": {},
+    "rules": {
+        "quotemark": [
+            true,
+            "single",
+            "jsx-double",
+            "avoid-escape",
+            "avoid-template"
+        ],
+        "member-access": [true, "check-parameter-property", "check-accessor"],
+        "member-ordering": [
+            true,
+            {
+                "order": [
+                    "public-static-field",
+                    "protected-static-field",
+                    "private-static-field",
+                    "public-static-method",
+                    "protected-static-method",
+                    "private-static-method",
+
+                    "private-instance-field",
+                    "protected-instance-field",
+                    "public-instance-field",
+
+                    "private-instance-method",
+                    "public-constructor",
+
+                    "private-constructor",
+
+                    "public-instance-method",
+                    "protected-instance-method"
+                ]
+            }
+        ],
+        "object-literal-sort-keys": false,
+        "no-any": [true, { "ignore-rest-args": true }],
+        "no-namespace": false,
+        "no-conditional-assignment": false,
+        "no-magic-numbers": [true, {"allowed-numbers": [-1, 0, 1, 2,3,4,5]}],
+        "no-trailing-whitespace": [true, "ignore-jsdoc", "ignore-template-strings"],
+        "no-non-null-assertion": true,
+        "no-reference": true,
+        "no-var-keyword": true,
+        "no-async-without-await": true,
+        "no-switch-case-fall-through": true,
+        "no-return-await": true,
+        "ban-comma-operator": true,
+        "function-constructor": true,
+        "static-this": true,
+        "number-literal-format": true,
+        "arrow-return-shorthand": true,
+        "cyclomatic-complexity": [true, 13],
+        "comment-format": [true, "check-space", "check-uppercase", "allow-trailing-lowercase", {"ignore-words": ["TODO", "HACK", "const", "if"]}],
+        "trailing-comma": [true, {"multiline": "ignore", "singleline": "never"}],
+        "curly": [true, "ignore-same-line"],
+        "variable-name": {
+            "options": [
+                "ban-keywords",
+                "check-format",
+                "allow-leading-underscore",
+                "allow-pascal-case"
+            ]
+        },
+        "prettier": true
+    },
+    "rulesDirectory": ["tslint-plugin-prettier"],
+    "linterOptions": {
+        "exclude": ["**/*.js", "src/serviceWorker.ts", "src/generated/*.tsx"]
+    }
+}
