@@ -1,0 +1,38 @@
+{
+  "name": "@satellite-earth/core",
+  "version": "2.0.0",
+  "description": "",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "dependencies": {
+    "@satellite-earth/clock": "^2.0.0",
+    "@satellite-earth/directory": "^2.0.0",
+    "@satellite-earth/torrent": "^2.0.0",
+    "@satellite-earth/utils": "^2.0.0",
+    "axios": "^0.21.1"
+  },
+  "scripts": {
+    "test": "mocha",
+    "compile": "node scripts/compile.js"
+  },
+  "devDependencies": {
+    "assert": "1.4.1",
+    "fs-extra": "5.0.0",
+    "ganache-cli": "6.0.3",
+    "mocha": "4.0.1",
+    "solc": "0.5.1"
+  },
+  "files": [
+    "index.js",
+    "abi.json",
+    "package.json",
+    "package-lock.json"
+  ],
+  "author": {
+    "name": "Stuart Bowman",
+    "email": "sbowman@satellite.earth"
+  },
+  "license": "ISC"
+}
