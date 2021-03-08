@@ -4,12 +4,16 @@
    overflow: hidden;
 }
 
+* {
+   box-sizing: border-box;
+}
+
 .App {
    height: 100%;
    width: 100%;
    overflow: hidden;
    text-align: center;
-   background-color: var(--primary-color-shade);
+   background-color: var(--primary-color-tint);
 }
 
 .App-logo {

@@ -1,5 +1,6 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import '../style/App.css';
+import Content from './Content';
 import Header from './Header';
 import { Earth } from '@satellite-earth/core';
 import Publication from '@satellite-earth/publication';
@@ -10,7 +11,7 @@ import { Dispatch } from 'redux';
 import { TestState } from '../reducers';
 import { addPublications } from '../actions';
 
-function App({ pubs, actions: { addPublications } }: PropsFromRedux) {
+function App({  actions: { addPublications } }: PropsFromRedux) {
    const [loaded, setLoaded] = useState(false);
    useEffect(() => {
       async function connectWorld() {
@@ -33,13 +34,12 @@ function App({ pubs, actions: { addPublications } }: PropsFromRedux) {
    return (
       <div className="App">
          <Header />
-         <span>{pubs}</span>
+         <Content />
       </div>
    );
 }
 
 const mapStateToProps = (state: TestState) => ({
-   pubs: state.publications.length,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({

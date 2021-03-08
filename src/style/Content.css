@@ -1,0 +1,10 @@
+.content-container {
+   display: block;
+   flex-direction: column;
+   height: 100%;
+   width: 100%;
+   max-width: 500px;
+   padding: 10px;
+   background-color: var(--default-background);
+   overflow-y: auto;
+}

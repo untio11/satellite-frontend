@@ -3,5 +3,5 @@
    flex-direction: row;
    height: 30px;
    width: 100%;
-   background-color: var(--primary-color);
+   background-color: var(--default-background-shade);
 }

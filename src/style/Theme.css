@@ -9,5 +9,7 @@
    --secondary-color-tint: #c8c6a7;
    --secondary-color-contrast: #000;
 
-   --default-background: #fefefe;
+   --default-background: #343434;
+   --default-background-tint: #535353;
+   --default-background-shade: #2b2b2b;
 }
