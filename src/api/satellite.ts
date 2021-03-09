@@ -1,5 +1,4 @@
-import { Epoch as testepoch } from '@satellite/epoch';
-testepoch._params_;
+import { Torrent as WebTorrent } from "webtorrent"
 
 export interface Signal extends Torrent {
    sender: string;
@@ -87,11 +86,105 @@ export interface Epoch extends Torrent {
    compressed: Uint8Array;
    included: { [uuid: string]: SignedContent };
 }
+ 
+export interface ContactEvent {
+    type: EventTypes.CONTACT,
+    data: {
+        world: string,
+        current: Epoch,
+        history: Epoch[],
+        tracking: State[],
+        endpoint: string,
+        options: { topics: {[topic: string]: {count:number}} }, // Not documented in the docs?
+    }
+};
 
-export interface Contact {
-   current: Epoch;
-   history: Epoch[];
-   options: { topics: { [topic: string]: { count: number } } };
-   tracking: [];
-   world: string;
+export interface ContacFailedEvent {
+    type: EventTypes.CONTACT_FAILED,
+    data: {
+        world: string,
+        error: any
+    }
 }
+
+export interface StateInitiliazedEvent {
+    type: EventTypes.STATE_INITIALIZED,
+    data: {
+        world: string, 
+        state: State,
+        epochNumber: Number
+    }
+}
+
+export interface TorrentAddedEvent {
+    type: EventTypes.TORRENT_ADDED,
+    data: {
+        torrent: WebTorrent,
+        loaded: number
+    }
+}
+
+export interface TorrentStoppedEvent {
+    type: EventTypes.TORRENT_STOPPED,
+    data: {
+        infoHash: string
+    }
+}
+
+export interface TorrentRemovedEvent {
+    type: EventTypes.TORRENT_REMOVED,
+    data: {
+        infoHash: string
+    }
+}
+
+export interface TorrentCompleteEvent {
+    type: EventTypes.TORRENT_COMPLETE,
+    data: {
+        torrent: WebTorrent,
+        data: Uint8Array
+    }
+}
+
+export interface DataLoadedEvent {
+    type: EventTypes.DATA_LOADED,
+    data: {
+        torrent: WebTorrent,
+        bytes: number,
+        loaded: number
+    }
+}
+
+export interface DataCachedEvent {
+    type: EventTypes.DATA_CACHED,
+    data: {
+        torrent: WebTorrent,
+        bytes: number,
+        index: number
+    }
+}
+
+export interface DataSentEvent {
+    type: EventTypes.DATA_SENT,
+    data: {
+        torrent: WebTorrent,
+        bytes: number
+    }
+}
+
+export enum EventTypes {
+    CONTACT = "contact",
+    CONTACT_FAILED = "contact_failed",
+    STATE_INITIALIZED = "state_initialized",
+    TORRENT_ADDED = "torrent_added",
+    TORRENT_STOPPED = "torrent_stopped",
+    TORRENT_REMOVED = "torrent_removed",
+    TORRENT_COMPLETE = "torrent_complete",
+    DATA_LOADED = "data_loaded",
+    DATA_CACHED = "data_cached",
+    DATA_SENT = "data_sent"
+};
+
+export type EventUnion = 
+ContactEvent | ContacFailedEvent | StateInitiliazedEvent | TorrentAddedEvent | TorrentStoppedEvent | 
+TorrentRemovedEvent | TorrentCompleteEvent | DataLoadedEvent | DataCachedEvent | DataSentEvent;
