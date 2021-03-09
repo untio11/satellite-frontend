@@ -5,7 +5,7 @@ import Publication from '@satellite-earth/publication';
 import ClientInstance from '../api/client';
 
 import '../style/Post.css';
-import { TestState } from '../reducers';
+import { GlobalState } from '../reducers';
 import { Dispatch } from 'redux';
 import { connect, ConnectedProps } from 'react-redux';
 
@@ -60,7 +60,7 @@ function Post({ publication, content }: IProps & PropsFromRedux) {
    );
 }
 
-const mapStateToProps = (state: TestState, ownProps: IProps) => ({
+const mapStateToProps = (state: GlobalState, ownProps: IProps) => ({
    content: state.contents[ownProps.publication.uuid],
 });
 

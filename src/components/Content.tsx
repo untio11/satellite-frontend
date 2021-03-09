@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect, ConnectedProps } from 'react-redux';
 import { Dispatch } from 'redux';
-import { TestState } from '../reducers';
+import { GlobalState } from '../reducers';
 import '../style/Content.css';
 import Post from './Post';
 
@@ -15,7 +15,7 @@ function Content({ pubs }: PropsFromRedux) {
    );
 }
 
-const mapStateToProps = (state: TestState) => ({
+const mapStateToProps = (state: GlobalState) => ({
    pubs: state.publications,
 });
 

@@ -1,0 +1,37 @@
+* {
+    box-sizing: border-box;
+  }
+  
+  /* Style the search field */
+  div.searchbar input[type=text] {
+    padding: 10px;
+    font-size: 17px;
+    border: 1px solid grey;
+    float: left;
+    width: 80%;
+    background: #f1f1f1;
+  }
+  
+  /* Style the submit button */
+  div.searchbar button {
+    float: left;
+    width: 20%;
+    padding: 10px;
+    background: var(--primary-color);
+    color: white;
+    font-size: 17px;
+    border: 1px solid grey;
+    border-left: none; /* Prevent double borders */
+    cursor: pointer;
+  }
+  
+  div.searchbar button:hover {
+    background: var(--primary-color-shade);
+  }
+  
+  /* Clear floats */
+  div.searchbar::after {
+    content: "";
+    clear: both;
+    display: table;
+  }
