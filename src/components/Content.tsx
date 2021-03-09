@@ -1,22 +1,23 @@
 import React from 'react';
 import { connect, ConnectedProps } from 'react-redux';
 import { Dispatch } from 'redux';
-import { TestState } from '../reducers';
+import { GlobalState } from '../reducers';
 import '../style/Content.css';
 import Post from './Post';
+import { postSelector } from "../selectors"
 
-function Content({ pubs }: PropsFromRedux) {
+function Content({ filteredPublications }: PropsFromRedux) {
    return (
       <div className="content-container">
-         {pubs.map((p) => (
+         {filteredPublications.map((p) => (
             <Post publication={p} />
          ))}
       </div>
    );
 }
 
-const mapStateToProps = (state: TestState) => ({
-   pubs: state.publications,
+const mapStateToProps = (state: GlobalState) => ({
+   filteredPublications: postSelector(state)
 });
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({});

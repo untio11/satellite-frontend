@@ -7,8 +7,9 @@ import Client, { API_URL } from '../api/client';
 
 import { connect, ConnectedProps } from 'react-redux';
 import { Dispatch } from 'redux';
-import { TestState } from '../reducers';
+import { GlobalState } from '../reducers';
 import { addPublications } from '../actions';
+import Searchbar from './Searchbar';
 
 function App({ actions: { addPublications } }: PropsFromRedux) {
    const [loaded, setLoaded] = useState(false);
@@ -23,12 +24,13 @@ function App({ actions: { addPublications } }: PropsFromRedux) {
    return (
       <div className="App">
          <Header />
+         <Searchbar />
          <Content />
       </div>
    );
 }
 
-const mapStateToProps = (state: TestState) => ({});
+const mapStateToProps = (state: GlobalState) => ({});
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
    actions: {

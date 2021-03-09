@@ -1,8 +1,11 @@
 import { Dispatch } from 'redux';
 import { Signal } from '../api/satellite';
 import Publication from '@satellite-earth/publication';
-import { TEST_TYPE } from '../constants/action-types';
-import { TestState } from '../reducers';
+import { 
+   TEST_TYPE,
+   FILTER_PUBLICATIONS_ACTION_TYPE
+} from '../constants/action-types';
+import { GlobalState } from '../reducers';
 
 export interface TestPayload {
    content: string;
@@ -23,14 +26,22 @@ export function addPublications(signals: Publication[], epochNumber: number) {
    };
 }
 
+export function filterPublications(searchTerms: string[]) {
+   return {
+      type: FILTER_PUBLICATIONS_ACTION_TYPE,
+      payload: searchTerms
+   }
+}
+
 export type TestActionType = ReturnType<typeof testAction>;
 export type AddPublicationType = ReturnType<typeof addPublications>;
+export type filterPublicationsType = ReturnType<typeof filterPublications>;
 
-export type ActionUnion = TestActionType | INormalizePublications | ICompletePublication;
+export type ActionUnion = TestActionType | filterPublicationsType | INormalizePublications | ICompletePublication;
 
 export const NORMALIZE_PUBLICATION_LIST = 'NORMALIZE_PUBLICATION_LIST';
 export const normalizePublicationList = (data: Publication[], options = {}) => {
-   return (dispatch: Dispatch, getState: () => TestState) => {
+   return (dispatch: Dispatch, getState: () => GlobalState) => {
       const { publications } = getState();
 
       // Remove previous verions of publications from list
@@ -126,7 +137,7 @@ export const normalizeEpochData = (signals: Signal[], options: Record<string, an
    // 	return order;
    // });
 
-   return async (dispatch: Dispatch, getState: () => TestState) => {
+   return async (dispatch: Dispatch, getState: () => GlobalState) => {
       //dispatch(normalizeSeedOrders(seedOrders));
 
       // Get reply and seeding totals from server,
