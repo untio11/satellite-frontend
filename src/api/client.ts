@@ -4,6 +4,21 @@ import Client from '@satellite-earth/client';
 import { addPublications, publicationComplete } from '../actions';
 import { Torrent } from './satellite';
 import axios from 'axios';
+import {
+   EventUnion,
+   SignedContent,
+   EventNames,
+   ContactEvent,
+   ContactFailedEvent,
+   StateInitiliazedEvent,
+   TorrentAddedEvent,
+   TorrentCompleteEvent,
+   TorrentRemovedEvent,
+   TorrentStoppedEvent,
+   DataCachedEvent,
+   DataLoadedEvent,
+   DataSentEvent,
+} from '../api/satellite';
 
 export const API_URL = 'https://api.satellite.earth';
 export const NAMESPACE = 'earth';
@@ -52,38 +67,75 @@ export const getWebseed = async (torrent: Torrent, eventParams: Record<string, a
    return resp.data;
 };
 
-const earth = new Earth();
-const client = new Client(
-   earth,
-   (event: string, data: Contact, params: Record<string, any>) => {
-      if (event === 'contact') {
-         Store.dispatch(addPublications(data.current.signals, data.current.number));
-         console.log(data);
-      } else if (event === 'torrent_complete') {
-         if (params.isPublication) {
-            const { publications } = Store.getState();
+const EventMapper: Record<
+   EventNames,
+   (response: EventUnion, params: Record<string, any>) => void
+> = {
+   contact: (response, params) => {
+      response = response as ContactEvent;
+      Store.dispatch(addPublications(response.data.current.signals, response.data.current.number));
+      console.log(response.data);
+   },
+   contact_failed: (response, params) => {
+      response = response as ContactFailedEvent;
+   },
+   state_initialized: (response, params) => {
+      response = response as StateInitiliazedEvent;
+   },
+   torrent_added: (response, params) => {
+      response = response as TorrentAddedEvent;
+   },
+   torrent_complete: (response, params) => {
+      response = response as TorrentCompleteEvent;
+      const data = response.data;
+      if (params.isPublication) {
+         const { publications } = Store.getState();
 
-            // When a publication torrent completes, first check if the torrent
-            // infoHash matches a pub that is currently being viewed (i.e. user
-            // loaded the publication page). If not, it means the publication is
-            // being loaded to get media data, so need to loop through the list.
+         // When a publication torrent completes, first check if the torrent
+         // infoHash matches a pub that is currently being viewed (i.e. user
+         // loaded the publication page). If not, it means the publication is
+         // being loaded to get media data, so need to loop through the list.
 
-            const infoHashMatchesPublication = publications.find(
-               (p) => p.infoHash === data.torrent.infoHash
-            );
+         const infoHashMatchesPublication = publications.find(
+            (p) => p.infoHash === data.torrent.infoHash
+         );
 
-            if (infoHashMatchesPublication) {
-               Store.dispatch(publicationComplete(infoHashMatchesPublication, data.data, params));
-            } else {
-               for (let item of publications) {
-                  if (item.infoHash === data.torrent.infoHash) {
-                     Store.dispatch(publicationComplete(item, data.data, params));
-                     break;
-                  }
+         if (infoHashMatchesPublication) {
+            Store.dispatch(publicationComplete(infoHashMatchesPublication, data.data, params));
+         } else {
+            for (let item of publications) {
+               if (item.infoHash === data.torrent.infoHash) {
+                  Store.dispatch(publicationComplete(item, data.data, params));
+                  break;
                }
             }
          }
-      } else {
+      }
+   },
+   torrent_removed: (response, params) => {
+      response = response as TorrentRemovedEvent;
+   },
+   torrent_stopped: (response, params) => {
+      response = response as TorrentStoppedEvent;
+   },
+   data_cached: (response, params) => {
+      response = response as DataCachedEvent;
+   },
+   data_loaded: (response, params) => {
+      response = response as DataLoadedEvent;
+   },
+   data_sent: (response, params) => {
+      response = response as DataSentEvent;
+   },
+};
+
+const earth = new Earth();
+const client = new Client(
+   earth,
+   (event: EventNames, data: EventUnion, params: Record<string, any>) => {
+      const fn = EventMapper[event];
+      if (fn) fn({ type: event, data: data }, params);
+      else {
          console.log(data);
          console.log(event);
          console.log(params);

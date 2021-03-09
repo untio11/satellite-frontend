@@ -4,6 +4,7 @@ import Content from './Content';
 import Header from './Header';
 import Publication from '@satellite-earth/publication';
 import Client, { API_URL } from '../api/client';
+
 import { connect, ConnectedProps } from 'react-redux';
 import { Dispatch } from 'redux';
 import { TestState } from '../reducers';
@@ -11,6 +12,7 @@ import { addPublications } from '../actions';
 
 function App({ actions: { addPublications } }: PropsFromRedux) {
    const [loaded, setLoaded] = useState(false);
+
    useEffect(() => {
       async function connectWorld() {
          await Client.contact('satellite', { endpoint: `${API_URL}/world` });
