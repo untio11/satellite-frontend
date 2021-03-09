@@ -65,14 +65,15 @@ function Post({ publication, content }: IProps & PropsFromRedux) {
          });
       }
    }, [publication, isLoaded]);
+   const markdown = content && content.markdown;
    return (
       <div className="post-container">
          <div className="post-header">
             <span className="post-author">@{publication.authorAlias}</span>
-            <span className="post-title">{publication._signed_.title}</span>
+            {!markdown && <span className="post-title">{publication._signed_.title}</span>}
          </div>
          <div className="post-content" ref={ref}>
-            <ReactMarkdown plugins={[gfm]} children={content && content.markdown} />
+            <ReactMarkdown plugins={[gfm]} children={markdown} />
          </div>
          {showReadMore && <span className="post-show-more">show more</span>}
       </div>

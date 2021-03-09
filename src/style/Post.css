@@ -37,7 +37,7 @@
    padding: 5px;
    overflow: hidden;
    font-family: Mukta;
-   margin: 5px;
+   margin: 0 5px 5px 5px;
 }
 
 .post-show-more {
@@ -47,6 +47,26 @@
 .post-content p {
    margin: 0 0 16px 0;
    text-align: left;
+}
+
+.post-content h1,
+.post-content h2,
+.post-content h3,
+.post-content h4,
+.post-content h5,
+.post-content h6 {
+   text-align: left;
+   font-family: DotGoth;
+   margin: 0 0 21px 0;
+}
+
+.post-container h1:first-child {
+   margin: 0;
+}
+
+.post-container h6 {
+   font-size: small;
+   margin: 0 0 16px 0;
 }
 
 .post-content a {
