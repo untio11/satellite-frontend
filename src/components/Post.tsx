@@ -41,7 +41,8 @@ function Post({ publication, content }: IProps & PropsFromRedux) {
             <a href={`https://satellite.earth/@${publication.authorAlias}`}>
                <span className="post-author">@{publication.authorAlias}</span>
             </a>
-            {!markdown && <span className="post-title">{publication._signed_.title}</span>}
+            {!markdown && <h1 className="post-title">{publication._signed_.title}</h1>}
+            {!markdown && <h6 className="post-subtitle">{publication._signed_.subtitle}</h6>}
          </div>
          <div className="post-content" ref={ref} style={isShowingMore ? { maxHeight: 'none' } : {}}>
             <ReactMarkdown plugins={[gfm]} children={markdown} />
