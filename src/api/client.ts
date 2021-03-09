@@ -106,6 +106,7 @@ const EventMapper: Record<
          for (let epoch of epochs) {
             if (epoch.infoHash === data.torrent.infoHash) {
                Store.dispatch(epochComplete(epoch, data.data, params));
+               // break to only load one, we could load multiple or all if we want
                break;
             }
          }
