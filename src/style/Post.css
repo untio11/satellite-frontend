@@ -19,6 +19,11 @@
    font-family: DotGoth;
 }
 
+.post-header a {
+   text-decoration: none;
+   color: var(--default-background-shade);
+}
+
 .post-author {
    font-size: 12px;
    cursor: pointer;
@@ -38,10 +43,13 @@
    overflow: hidden;
    font-family: Mukta;
    margin: 0 5px 5px 5px;
+   max-height: 200px;
 }
 
 .post-show-more {
    cursor: pointer;
+   text-align: center;
+   color: var(--secondary-color-tint);
 }
 
 .post-content p {

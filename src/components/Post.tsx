@@ -9,49 +9,18 @@ import { TestState } from '../reducers';
 import { Dispatch } from 'redux';
 import { connect, ConnectedProps } from 'react-redux';
 
-const markdown = `A paragraph with *emphasis* and **strong importance**.
-
-> A block quote with ~strikethrough~ and a URL: https://reactjs.org.
-
-* Lists
-* [ ] todo
-* [x] done
-* Lists
-* [ ] todo
-* [x] done
-* Lists
-* [ ] todo
-* [x] done
-* Lists
-* [ ] todo
-* [x] done
-* Lists
-* [ ] todo
-* [x] done
-* Lists
-* [ ] todo
-* [x] done
-* Lists
-* [ ] todo
-* [x] done
-* Lists
-* [ ] todo
-* [x] done
-* Lists
-* [ ] todo
-* [x] done
-`;
 export interface IProps {
    publication: Publication;
 }
 
 function Post({ publication, content }: IProps & PropsFromRedux) {
    const ref = useRef<HTMLDivElement>(null);
-   const [showReadMore, setShowMore] = useState(false);
+   const [shouldShowReadMore, setShouldShowReadMore] = useState(false);
+   const [isShowingMore, setShowMore] = useState(false);
    const [isLoaded, setLoaded] = useState(false);
    useEffect(() => {
-      if (ref.current && ref.current.clientHeight >= 150) {
-         setShowMore(true);
+      if (ref.current && ref.current.clientHeight >= 180) {
+         setShouldShowReadMore(true);
       }
       if (!isLoaded) {
          setLoaded(true);
@@ -64,18 +33,29 @@ function Post({ publication, content }: IProps & PropsFromRedux) {
             },
          });
       }
-   }, [publication, isLoaded]);
+   }, [publication, isLoaded, isShowingMore, shouldShowReadMore, content]);
    const markdown = content && content.markdown;
    return (
       <div className="post-container">
          <div className="post-header">
-            <span className="post-author">@{publication.authorAlias}</span>
+            <a href={`https://satellite.earth/@${publication.authorAlias}`}>
+               <span className="post-author">@{publication.authorAlias}</span>
+            </a>
             {!markdown && <span className="post-title">{publication._signed_.title}</span>}
          </div>
-         <div className="post-content" ref={ref}>
+         <div className="post-content" ref={ref} style={isShowingMore ? { maxHeight: 'none' } : {}}>
             <ReactMarkdown plugins={[gfm]} children={markdown} />
          </div>
-         {showReadMore && <span className="post-show-more">show more</span>}
+         {shouldShowReadMore && !isShowingMore && (
+            <span
+               onClick={() => {
+                  setShowMore(true);
+               }}
+               className="post-show-more"
+            >
+               show more
+            </span>
+         )}
       </div>
    );
 }
