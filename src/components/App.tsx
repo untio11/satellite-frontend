@@ -2,9 +2,10 @@ import { useEffect, useState } from 'react';
 import '../style/App.css';
 import Header from './Header';
 import { Earth } from '@satellite-earth/core';
+import Publication from '@satellite-earth/publication';
 import Client from '@satellite-earth/client';
-import { Contact, SignedContent } from '../api/satellite';
-import { connect, ConnectedProps, useStore } from 'react-redux';
+import { Contact } from '../api/satellite';
+import { connect, ConnectedProps } from 'react-redux';
 import { Dispatch } from 'redux';
 import { TestState } from '../reducers';
 import { addPublications } from '../actions';
@@ -15,11 +16,15 @@ function App({ pubs, actions: { addPublications } }: PropsFromRedux) {
       async function connectWorld() {
          const earth = new Earth();
          const client = new Client(earth, (event: string, data: Contact, params: string[]) => {
-            console.log(data);
-            console.log(event);
-            console.log(params);
-            setLoaded(true);
-            addPublications(data.current.included);
+            if (event === 'contact') {
+               setLoaded(true);
+               addPublications(data.current.signals, data.current.number);
+               console.log(data);
+            } else {
+               console.log(data);
+               console.log(event);
+               console.log(params);
+            }
          });
          client.contact('satellite', { endpoint: 'https://api.satellite.earth/world' });
       }
@@ -34,13 +39,13 @@ function App({ pubs, actions: { addPublications } }: PropsFromRedux) {
 }
 
 const mapStateToProps = (state: TestState) => ({
-   pubs: state.contents.length,
+   pubs: state.publications.length,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
    actions: {
-      addPublications: (v: Record<string, SignedContent>) => {
-         dispatch(addPublications(v));
+      addPublications: (v: Publication[], n: number) => {
+         dispatch(addPublications(v, n));
       },
    },
 });

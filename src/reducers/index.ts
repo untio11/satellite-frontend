@@ -1,18 +1,21 @@
-import { ActionUnion } from '../actions';
+import { ActionUnion, NORMALIZE_PUBLICATION_LIST } from '../actions';
 import { SignedContent } from '../api/satellite';
-import { ADD_PUBLICATION_ACTION_TYPE } from '../constants/action-types';
+import Publication from '@satellite-earth/publication';
 
 export interface TestState {
    contents: SignedContent[];
+   publications: Publication[];
 }
 
 const initialState: TestState = {
    contents: [],
+   publications: [],
 };
 
 export function rootReducer(state = initialState, action: ActionUnion): TestState {
-   if (action.type === ADD_PUBLICATION_ACTION_TYPE) {
-      return { ...state, contents: [...state.contents, ...Object.values(action.payload)] };
+   if (action.type === NORMALIZE_PUBLICATION_LIST) {
+      return { ...state, publications: [...action.data.publications] };
    }
+
    return state;
 }
