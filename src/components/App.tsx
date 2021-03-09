@@ -2,32 +2,19 @@ import React, { useEffect, useState } from 'react';
 import '../style/App.css';
 import Content from './Content';
 import Header from './Header';
-import { Earth } from '@satellite-earth/core';
 import Publication from '@satellite-earth/publication';
-import Client from '@satellite-earth/client';
-import { Contact } from '../api/satellite';
+import Client, { API_URL } from '../api/client';
 import { connect, ConnectedProps } from 'react-redux';
 import { Dispatch } from 'redux';
 import { TestState } from '../reducers';
 import { addPublications } from '../actions';
 
-function App({  actions: { addPublications } }: PropsFromRedux) {
+function App({ actions: { addPublications } }: PropsFromRedux) {
    const [loaded, setLoaded] = useState(false);
    useEffect(() => {
       async function connectWorld() {
-         const earth = new Earth();
-         const client = new Client(earth, (event: string, data: Contact, params: string[]) => {
-            if (event === 'contact') {
-               setLoaded(true);
-               addPublications(data.current.signals, data.current.number);
-               console.log(data);
-            } else {
-               console.log(data);
-               console.log(event);
-               console.log(params);
-            }
-         });
-         client.contact('satellite', { endpoint: 'https://api.satellite.earth/world' });
+         await Client.contact('satellite', { endpoint: `${API_URL}/world` });
+         setLoaded(true);
       }
       if (!loaded) connectWorld();
    });
@@ -39,8 +26,7 @@ function App({  actions: { addPublications } }: PropsFromRedux) {
    );
 }
 
-const mapStateToProps = (state: TestState) => ({
-});
+const mapStateToProps = (state: TestState) => ({});
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
    actions: {

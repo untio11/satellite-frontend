@@ -26,7 +26,7 @@ export function addPublications(signals: Publication[], epochNumber: number) {
 export type TestActionType = ReturnType<typeof testAction>;
 export type AddPublicationType = ReturnType<typeof addPublications>;
 
-export type ActionUnion = TestActionType | INormalizePublications;
+export type ActionUnion = TestActionType | INormalizePublications | ICompletePublication;
 
 export const NORMALIZE_PUBLICATION_LIST = 'NORMALIZE_PUBLICATION_LIST';
 export const normalizePublicationList = (data: Publication[], options = {}) => {
@@ -145,3 +145,30 @@ export const normalizeEpochData = (signals: Signal[], options: Record<string, an
       dispatch(normalizePublicationList(_publications, options));
    };
 };
+
+export const PUBLICATION_COMPLETE = 'PUBLICATION_COMPLETE';
+export const publicationComplete = (publication: Publication, data: any, options: any) => {
+   return async (dispatch: Dispatch) => {
+      // publication.trust();
+
+      await publication.data(data);
+
+      // IDEA . . . save all contained media in the
+      // meta cache
+
+      // If it exists, call function with
+      // publication after adding data
+      if (options.onComplete) {
+         options.onComplete(publication);
+      }
+
+      dispatch({ type: PUBLICATION_COMPLETE, data: { publication } });
+   };
+};
+
+export interface ICompletePublication {
+   type: typeof PUBLICATION_COMPLETE;
+   data: {
+      publication: Publication;
+   };
+}
