@@ -6,7 +6,6 @@ import { Torrent } from './satellite';
 import axios from 'axios';
 import {
    EventUnion,
-   SignedContent,
    EventNames,
    ContactEvent,
    ContactFailedEvent,

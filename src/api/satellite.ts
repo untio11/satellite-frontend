@@ -44,6 +44,28 @@ export interface SignedContent {
    };
 }
 
+export interface Publication extends SignedContent {
+   action: string;
+   announce: [];
+   block: string;
+   epoch: string;
+   sender: string;
+   verified: boolean;
+}
+
+export interface Reply {
+   message: string;
+   replyRef: {
+      title: string;
+      webId: string;
+   };
+   replyTo: string;
+   seed: string;
+   signed: string;
+   timestamp: number;
+   uuid: string;
+}
+
 export interface Message extends SignedContent {
    uuid: string;
    uri: string;
