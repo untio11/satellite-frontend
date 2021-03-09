@@ -9,7 +9,13 @@ function Searchbar({ actions: {filterPublications}}: PropsFromRedux) {
     let searchTerms: string[] = [];
     return(
         <div className="searchbar">
-            <input onChange={(event: ChangeEvent<HTMLInputElement>) => { searchTerms = event.target.value.split(';')}} type="text" placeholder="Search..." name="search"></input>
+            <input onChange={(event: ChangeEvent<HTMLInputElement>) => { 
+                searchTerms = event.target.value.split(';').map((term) => (term.trim()))
+                }} type="text" placeholder="Search..." name="search" onKeyUp={(event: React.KeyboardEvent) => {
+                    if (event.key == 'Enter') {
+                        filterPublications(searchTerms);
+                    }
+                }}></input>
             <button type="button" onClick={() => {filterPublications(searchTerms)}}><i className="fa fa-search"></i></button>
         </div>
     );

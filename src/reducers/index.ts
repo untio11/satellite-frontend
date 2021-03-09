@@ -33,12 +33,8 @@ export function rootReducer(state = initialState, action: ActionUnion): GlobalSt
    } else if (action.type === FILTER_PUBLICATIONS_ACTION_TYPE) {
       return {
          ...state,
-         publications: state.publications.filter((pub) => (
-            pub._signed_.title.includes(action.payload[0]) ||
-            pub._signed_.subtitle.includes(action.payload[0])
-            ))
-      }
-      
+         searchTerms: action.payload
+      };
    }
 
    return state;

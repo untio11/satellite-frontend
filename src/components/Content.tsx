@@ -4,11 +4,12 @@ import { Dispatch } from 'redux';
 import { GlobalState } from '../reducers';
 import '../style/Content.css';
 import Post from './Post';
+import { postSelector } from "../selectors"
 
-function Content({ pubs }: PropsFromRedux) {
+function Content({ filteredPublications }: PropsFromRedux) {
    return (
       <div className="content-container">
-         {pubs.map((p) => (
+         {filteredPublications.map((p) => (
             <Post publication={p} />
          ))}
       </div>
@@ -16,7 +17,7 @@ function Content({ pubs }: PropsFromRedux) {
 }
 
 const mapStateToProps = (state: GlobalState) => ({
-   pubs: state.publications,
+   filteredPublications: postSelector(state)
 });
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({});
