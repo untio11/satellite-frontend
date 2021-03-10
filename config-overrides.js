@@ -1,4 +1,4 @@
-const { override, addLessLoader, fixBabelImports, useEslintRc } = require('customize-cra');
+const { override, addLessLoader, fixBabelImports } = require('customize-cra');
 
 module.exports = {
     webpack: (config, env) => {
@@ -17,7 +17,6 @@ module.exports = {
         )(config, env);
     },
     jest: (config) => {
-        config.transformIgnorePatterns[0] = 'node_modules/(?!(@cyclomedia|ol)/)';
         config.setupFiles.push('./setupJest.js');
         return config;
     },
