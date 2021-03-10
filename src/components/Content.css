@@ -1,9 +1,0 @@
-.content-container {
-   display: block;
-   flex-direction: column;
-   height: 100%;
-   width: 100%;
-   max-width: 500px;
-   background-color: var(--secondary-color);
-   overflow: hidden;
-}

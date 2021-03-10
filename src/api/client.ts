@@ -85,8 +85,6 @@ const EventMapper: Record<
          });
          break;
       }
-
-      console.log(response.data);
    },
    contact_failed: (response, params) => {
       response = response as ContactFailedEvent;
@@ -157,11 +155,6 @@ const client = new Client(
    (event: EventNames, data: EventUnion, params: Record<string, any>) => {
       const fn = EventMapper[event];
       if (fn) fn({ type: event, data: data }, params);
-      else {
-         console.log(data);
-         console.log(event);
-         console.log(params);
-      }
    },
    {
       getWebseed,

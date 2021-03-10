@@ -2,9 +2,13 @@ import { Dispatch } from 'redux';
 import { Epoch as IEpoch, Signal } from '../api/satellite';
 import Publication from '@satellite-earth/publication';
 import Epoch from '@satellite-earth/epoch';
-import { ADD_EPOCHS_ACTION_TYPE, TEST_TYPE } from '../constants/action-types';
-import { TestState } from '../reducers';
+import {
+   ADD_EPOCHS_ACTION_TYPE,
+   TEST_TYPE,
+   FILTER_PUBLICATIONS_ACTION_TYPE,
+} from '../constants/action-types';
 import ClientInstance from '../api/client';
+import { GlobalState } from '../reducers';
 
 export interface TestPayload {
    content: string;
@@ -34,19 +38,29 @@ export function addEpochs(epochs: IEpoch[]) {
    };
 }
 
+export function filterPublications(searchTerms: string[]) {
+   return {
+      type: FILTER_PUBLICATIONS_ACTION_TYPE,
+      payload: searchTerms,
+   };
+}
+
 export type TestActionType = ReturnType<typeof testAction>;
 export type AddPublicationType = ReturnType<typeof addPublications>;
 export type AddEpochsType = ReturnType<typeof addEpochs>;
+export type filterPublicationsType = ReturnType<typeof filterPublications>;
 
 export type ActionUnion =
    | TestActionType
    | INormalizePublications
    | ICompletePublication
-   | AddEpochsType;
+   | AddEpochsType
+   | filterPublicationsType
+   | AddPublicationType;
 
 export const NORMALIZE_PUBLICATION_LIST = 'NORMALIZE_PUBLICATION_LIST';
 export const normalizePublicationList = (data: Publication[], options = {}) => {
-   return (dispatch: Dispatch, getState: () => TestState) => {
+   return (dispatch: Dispatch, getState: () => GlobalState) => {
       const { publications } = getState();
 
       // Remove previous verions of publications from list
@@ -142,7 +156,7 @@ export const normalizeEpochData = (signals: Signal[], options: Record<string, an
    // 	return order;
    // });
 
-   return async (dispatch: Dispatch, getState: () => TestState) => {
+   return async (dispatch: Dispatch, getState: () => GlobalState) => {
       //dispatch(normalizeSeedOrders(seedOrders));
 
       // Get reply and seeding totals from server,
