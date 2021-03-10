@@ -1,7 +1,7 @@
 const { override, addLessLoader, fixBabelImports, useEslintRc } = require('customize-cra');
 
 module.exports = {
-    webpack: (config, ...args) => {
+    webpack: (config, env) => {
         config.resolve.modules.push('externals');
         return override(
             fixBabelImports('import', {
@@ -14,7 +14,7 @@ module.exports = {
                 importLoaders: true,
                 modifyVars: {},
             })
-        )(config, ...args);
+        )(config, env);
     },
     jest: (config) => {
         config.transformIgnorePatterns[0] = 'node_modules/(?!(@cyclomedia|ol)/)';
