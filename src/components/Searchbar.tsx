@@ -1,7 +1,7 @@
 import { ChangeEvent } from 'react';
 import { connect, ConnectedProps } from 'react-redux';
 import { Dispatch } from 'redux';
-import { filterPublications } from '../actions';
+import { filterPublications as filterPublicationsAction } from '../actions';
 import { GlobalState } from '../reducers';
 import '../style/Searchbar.css';
 
@@ -38,7 +38,7 @@ const mapStateToProps = (state: GlobalState) => ({});
 const mapDispatchToProps = (dispatch: Dispatch) => ({
     actions: {
         filterPublications: (searchTerms: string[]) => {
-            dispatch(filterPublications(searchTerms));
+            dispatch(filterPublicationsAction(searchTerms));
         }
     }
 });

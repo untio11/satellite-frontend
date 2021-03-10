@@ -1,4 +1,4 @@
-import Client from '@satellite-earth/client';
+import Client, { EventUnion } from '@satellite-earth/client';
 import { Earth } from '@satellite-earth/core';
 import axios from 'axios';
 import { addEpochs, addPublications, epochComplete, publicationComplete } from '../actions';
@@ -9,14 +9,13 @@ import {
     DataLoadedEvent,
     DataSentEvent,
     EventNames,
-    EventUnion,
     StateInitiliazedEvent,
     TorrentAddedEvent,
     TorrentCompleteEvent,
     TorrentRemovedEvent,
     TorrentStoppedEvent
 } from '../api/satellite';
-import Store from '../store';
+import Store, { TypedThunkDispatch } from '../store';
 import { Torrent } from './satellite';
 
 export const API_URL = 'https://api.satellite.earth';
@@ -72,10 +71,9 @@ const EventMapper: Record<
 > = {
     contact: (response, params) => {
         response = response as ContactEvent;
-        Store.dispatch(
-            addPublications(response.data.current.signals, response.data.current.number)
-        );
-        Store.dispatch(addEpochs(response.data.history));
+        const dispatch = Store.dispatch as TypedThunkDispatch;
+        dispatch(addPublications(response.data.current.signals, response.data.current.number));
+        dispatch(addEpochs(response.data.history));
 
         for (const epoch of response.data.history) {
             client.load(epoch, {
@@ -100,12 +98,13 @@ const EventMapper: Record<
     torrent_complete: (response, params) => {
         response = response as TorrentCompleteEvent;
         const data = response.data;
+        const dispatch = Store.dispatch as TypedThunkDispatch;
 
         if (params.isEpoch) {
             const { epochs } = Store.getState();
             for (const epoch of epochs) {
                 if (epoch.infoHash === data.torrent.infoHash) {
-                    Store.dispatch(epochComplete(epoch, data.data, params));
+                    dispatch(epochComplete(epoch, data.data, params));
                     // Break to only load one, we could load multiple or all if we want
                     break;
                 }
@@ -123,11 +122,11 @@ const EventMapper: Record<
             );
 
             if (infoHashMatchesPublication) {
-                Store.dispatch(publicationComplete(infoHashMatchesPublication, data.data, params));
+                dispatch(publicationComplete(infoHashMatchesPublication, data.data, params));
             } else {
                 for (const item of publications) {
                     if (item.infoHash === data.torrent.infoHash) {
-                        Store.dispatch(publicationComplete(item, data.data, params));
+                        dispatch(publicationComplete(item, data.data, params));
                         break;
                     }
                 }

@@ -2,7 +2,7 @@ const { override, addLessLoader, fixBabelImports, useEslintRc } = require('custo
 
 module.exports = {
     webpack: (config, env) => {
-        config.resolve.modules.push('externals');
+        //config.resolve.modules.push('externals');
         return override(
             fixBabelImports('import', {
                 libraryName: 'antd',

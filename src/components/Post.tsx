@@ -1,17 +1,17 @@
 import Publication from '@satellite-earth/publication';
-import React, { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import ReactMarkdown from 'react-markdown';
 import gfm from 'remark-gfm';
 import ClientInstance from '../api/client';
 
 import { connect, ConnectedProps } from 'react-redux';
-import { Dispatch } from 'redux';
 import { GlobalState } from '../reducers';
 import '../style/Post.css';
 
 export interface IProps {
     publication: Publication;
 }
+const MAX_POST_CONTENT_HEIGHT = 180;
 
 function Post({ publication, content }: IProps & PropsFromRedux) {
     const ref = useRef<HTMLDivElement>(null);
@@ -19,7 +19,7 @@ function Post({ publication, content }: IProps & PropsFromRedux) {
     const [isShowingMore, setShowMore] = useState(false);
     const [isLoaded, setLoaded] = useState(false);
     useEffect(() => {
-        if (ref.current && ref.current.clientHeight >= 180) {
+        if (ref.current && ref.current.clientHeight >= MAX_POST_CONTENT_HEIGHT) {
             setShouldShowReadMore(true);
         }
         if (!isLoaded) {
@@ -69,7 +69,7 @@ const mapStateToProps = (state: GlobalState, ownProps: IProps) => ({
     content: state.contents[ownProps.publication.uuid]
 });
 
-const mapDispatchToProps = (dispatch: Dispatch) => ({});
+const mapDispatchToProps = () => ({});
 
 const connector = connect(mapStateToProps, mapDispatchToProps);
 type PropsFromRedux = ConnectedProps<typeof connector>;

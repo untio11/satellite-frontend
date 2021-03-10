@@ -1,6 +1,7 @@
 import Epoch from '@satellite-earth/epoch';
 import Publication from '@satellite-earth/publication';
 import { Dispatch } from 'redux';
+import { ThunkDispatch } from 'redux-thunk';
 import ClientInstance from '../api/client';
 import { Epoch as IEpoch, Signal } from '../api/satellite';
 import {
@@ -9,17 +10,18 @@ import {
     TEST_TYPE
 } from '../constants/action-types';
 import { GlobalState } from '../reducers';
+import { TypedThunkDispatch } from '../store';
 
-export interface TestPayload {
+export interface ITestPayload {
     content: string;
 }
 
-export function testAction(payload: TestPayload) {
+export function testAction(payload: ITestPayload) {
     return { type: TEST_TYPE, payload };
 }
 
 export function addPublications(signals: Publication[], epochNumber: number) {
-    return (dispatch: Dispatch) => {
+    return (dispatch: ThunkDispatch<GlobalState, void, ActionUnion>) => {
         dispatch(
             normalizeEpochData(signals, {
                 epochNumber,
@@ -29,7 +31,7 @@ export function addPublications(signals: Publication[], epochNumber: number) {
     };
 }
 
-export function addEpochs(epochs: IEpoch[]) {
+export function addEpochs(epochs: Epoch[]) {
     return {
         type: ADD_EPOCHS_ACTION_TYPE,
         data: {
@@ -46,7 +48,6 @@ export function filterPublications(searchTerms: string[]) {
 }
 
 export type TestActionType = ReturnType<typeof testAction>;
-export type AddPublicationType = ReturnType<typeof addPublications>;
 export type AddEpochsType = ReturnType<typeof addEpochs>;
 export type filterPublicationsType = ReturnType<typeof filterPublications>;
 
@@ -55,8 +56,7 @@ export type ActionUnion =
     | INormalizePublications
     | ICompletePublication
     | AddEpochsType
-    | filterPublicationsType
-    | AddPublicationType;
+    | filterPublicationsType;
 
 export const NORMALIZE_PUBLICATION_LIST = 'NORMALIZE_PUBLICATION_LIST';
 export const normalizePublicationList = (data: Publication[], options = {}) => {
@@ -104,17 +104,17 @@ export const normalizePublicationList = (data: Publication[], options = {}) => {
             return { latest, versions };
         };
 
-        let latest = publications;
+        let latestPub = publications;
 
         if (data !== null) {
             const normalized = deduplicate([...(data || []), ...publications]);
-            latest = normalized.latest;
+            latestPub = normalized.latest;
         }
 
         dispatch({
             type: NORMALIZE_PUBLICATION_LIST,
             data: {
-                publications: latest
+                publications: latestPub
             }
         });
     };
@@ -156,7 +156,7 @@ export const normalizeEpochData = (signals: Signal[], options: Record<string, an
     // 	return order;
     // });
 
-    return async (dispatch: Dispatch, getState: () => GlobalState) => {
+    return async (dispatch: TypedThunkDispatch, getState: () => GlobalState) => {
         // Dispatch(normalizeSeedOrders(seedOrders));
 
         // Get reply and seeding totals from server,
@@ -204,7 +204,7 @@ export interface ICompletePublication {
 }
 
 export const loadEpochTorrent = (epoch: IEpoch) => {
-    return (dispatch: Dispatch, getState: () => TestState) => {
+    return (dispatch: Dispatch, getState: () => GlobalState) => {
         const model = epoch instanceof Epoch ? epoch : new Epoch(epoch);
         const active = ClientInstance.getTorrent(epoch.infoHash);
 
@@ -223,7 +223,7 @@ export const loadEpochTorrent = (epoch: IEpoch) => {
 
 export const EPOCH_COMPLETE = 'EPOCH_COMPLETE';
 export const epochComplete = (epoch: Epoch, data: any, eventParams: any) => {
-    return async (dispatch: Dispatch, getState: () => TestState) => {
+    return async (dispatch: TypedThunkDispatch, getState: () => GlobalState) => {
         // Create a new model for extracting signals
         // so the model will get garbage-collected,
         // there's no reason to maintain the array

@@ -134,7 +134,7 @@ export interface StateInitiliazedEvent {
     data: {
         world: string;
         state: State;
-        epochNumber: Number;
+        epochNumber: number;
     };
 }
 

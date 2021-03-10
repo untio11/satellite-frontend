@@ -1,17 +1,12 @@
-import Publication from '@satellite-earth/publication';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import Client, { API_URL } from '../api/client';
 import '../style/App.css';
 import Content from './Content';
 import Header from './Header';
 
-import { connect, ConnectedProps } from 'react-redux';
-import { Dispatch } from 'redux';
-import { addPublications } from '../actions';
-import { GlobalState } from '../reducers';
 import Searchbar from './Searchbar';
 
-function App({ actions: { addPublications } }: PropsFromRedux) {
+function App() {
     const [loaded, setLoaded] = useState(false);
 
     useEffect(() => {
@@ -30,17 +25,4 @@ function App({ actions: { addPublications } }: PropsFromRedux) {
     );
 }
 
-const mapStateToProps = (state: GlobalState) => ({});
-
-const mapDispatchToProps = (dispatch: Dispatch) => ({
-    actions: {
-        addPublications: (v: Publication[], n: number) => {
-            dispatch(addPublications(v, n));
-        }
-    }
-});
-
-const connector = connect(mapStateToProps, mapDispatchToProps);
-type PropsFromRedux = ConnectedProps<typeof connector>;
-
-export default connector(App);
+export default App;

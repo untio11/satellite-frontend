@@ -1,6 +1,6 @@
+import Epoch from '@satellite-earth/epoch';
+import Publication from '@satellite-earth/publication';
 import { ActionUnion, NORMALIZE_PUBLICATION_LIST, PUBLICATION_COMPLETE } from '../actions';
-import { Epoch } from '../api/satellite';
-import { Publication } from '../api/satellite';
 import { ADD_EPOCHS_ACTION_TYPE } from '../constants/action-types';
 import { FILTER_PUBLICATIONS_ACTION_TYPE } from '../constants/action-types';
 

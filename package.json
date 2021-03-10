@@ -10,7 +10,7 @@
         "lint:all": "npx prettier --check \"./src/**/*.{ts,tsx,js,json}\" && tslint --project ./tsconfig.json",
         "lint:js:fix": "npx prettier --write \"./src/**/*.{js,jsx,json}\"",
         "lint:less:fix": "stylelint \"./src/**/*.less\" --fix",
-        "lint:ts:fix": "npx prettier --write \"./src/**/*.{ts,tsx}\" && tslint --fix --project ./tsconfig.json",
+        "lint:ts:fix": "npx prettier --write \"./src/**/*.{ts,tsx}\" && tslint --fix --force --project ./tsconfig.json",
         "lint:all:fix": "npx prettier --write \"./src/**/*.{ts,tsx,js,json}\" && tslint --fix --project ./tsconfig.json",
         "tslint-check": "tslint-config-prettier-check ./tslint.json"
     },
@@ -52,6 +52,11 @@
         ]
     },
     "dependencies": {
+        "@satellite-earth/client": "^2.0.0",
+        "@satellite-earth/core": "^2.0.0",
+        "@satellite-earth/epoch": "^2.0.0",
+        "@satellite-earth/publication": "^2.0.0",
+        "@satellite-earth/torrent": "^2.0.0",
         "@testing-library/jest-dom": "^5.11.9",
         "@testing-library/react": "^11.2.5",
         "@testing-library/user-event": "^12.8.1",
