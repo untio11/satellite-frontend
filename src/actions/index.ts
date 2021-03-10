@@ -1,10 +1,13 @@
 import { Dispatch } from 'redux';
-import { Signal } from '../api/satellite';
+import { Epoch as IEpoch, Signal } from '../api/satellite';
 import Publication from '@satellite-earth/publication';
-import { 
+import Epoch from '@satellite-earth/epoch';
+import {
+   ADD_EPOCHS_ACTION_TYPE,
    TEST_TYPE,
-   FILTER_PUBLICATIONS_ACTION_TYPE
+   FILTER_PUBLICATIONS_ACTION_TYPE,
 } from '../constants/action-types';
+import ClientInstance from '../api/client';
 import { GlobalState } from '../reducers';
 
 export interface TestPayload {
@@ -26,18 +29,34 @@ export function addPublications(signals: Publication[], epochNumber: number) {
    };
 }
 
+export function addEpochs(epochs: IEpoch[]) {
+   return {
+      type: ADD_EPOCHS_ACTION_TYPE,
+      data: {
+         epochs: epochs,
+      },
+   };
+}
+
 export function filterPublications(searchTerms: string[]) {
    return {
       type: FILTER_PUBLICATIONS_ACTION_TYPE,
-      payload: searchTerms
-   }
+      payload: searchTerms,
+   };
 }
 
 export type TestActionType = ReturnType<typeof testAction>;
 export type AddPublicationType = ReturnType<typeof addPublications>;
+export type AddEpochsType = ReturnType<typeof addEpochs>;
 export type filterPublicationsType = ReturnType<typeof filterPublications>;
 
-export type ActionUnion = TestActionType | filterPublicationsType | INormalizePublications | ICompletePublication;
+export type ActionUnion =
+   | TestActionType
+   | INormalizePublications
+   | ICompletePublication
+   | AddEpochsType
+   | filterPublicationsType
+   | AddPublicationType;
 
 export const NORMALIZE_PUBLICATION_LIST = 'NORMALIZE_PUBLICATION_LIST';
 export const normalizePublicationList = (data: Publication[], options = {}) => {
@@ -183,3 +202,44 @@ export interface ICompletePublication {
       publication: Publication;
    };
 }
+
+export const loadEpochTorrent = (epoch: IEpoch) => {
+   return (dispatch: Dispatch, getState: () => TestState) => {
+      const model = epoch instanceof Epoch ? epoch : new Epoch(epoch);
+      const active = ClientInstance.getTorrent(epoch.infoHash);
+
+      if (!active) {
+         // Load torrent if not already
+         ClientInstance.load(model, {
+            directDownload: true,
+            eventParams: {
+               alias: 'satellite',
+               isEpoch: true,
+            },
+         });
+      }
+   };
+};
+
+export const EPOCH_COMPLETE = 'EPOCH_COMPLETE';
+export const epochComplete = (epoch: Epoch, data: any, eventParams: any) => {
+   return async (dispatch: Dispatch, getState: () => TestState) => {
+      // Create a new model for extracting signals
+      // so the model will get garbage-collected,
+      // there's no reason to maintain the array
+      // of signals since they get stored in the
+      // publications list and the forum instance.
+
+      // epoch.trust();
+
+      // Load the torrent data
+      await epoch.data(data);
+
+      // Pass the unpacked signals to be processed
+      dispatch(
+         normalizeEpochData(epoch.signals, {
+            epochNumber: epoch.number,
+         })
+      );
+   };
+};

@@ -19,6 +19,14 @@
    font-family: DotGoth;
 }
 
+.post-header h1 {
+   padding: 10px 5px 0 5px;
+}
+
+.post-header h6 {
+   padding: 0 5px 0 5px;
+}
+
 .post-header a {
    text-decoration: none;
    color: var(--default-background-shade);
@@ -27,12 +35,6 @@
 .post-author {
    font-size: 12px;
    cursor: pointer;
-}
-
-.post-title {
-   font-size: large;
-   font-weight: bold;
-   text-align: left;
 }
 
 .post-content {
@@ -55,26 +57,38 @@
 .post-content p {
    margin: 0 0 16px 0;
    text-align: left;
+   line-height: 18px;
 }
 
-.post-content h1,
-.post-content h2,
-.post-content h3,
-.post-content h4,
-.post-content h5,
-.post-content h6 {
+.post-content p:first-of-type {
+   margin: 16px 0 16px 0;
+}
+
+.post-container h1,
+.post-container h2,
+.post-container h3,
+.post-container h4,
+.post-container h5,
+.post-container h6 {
    text-align: left;
    font-family: DotGoth;
-   margin: 0 0 21px 0;
+   margin: 21px 0 10px 0;
+   line-height: 18px;
 }
 
-.post-container h1:first-child {
+.post-container h1 {
+   font-size: large;
+   font-weight: bold;
+   text-align: left;
+}
+
+.post-container h1:first-of-type {
    margin: 0;
 }
 
 .post-container h6 {
    font-size: small;
-   margin: 0 0 16px 0;
+   margin: 0;
 }
 
 .post-content a {
@@ -118,4 +132,8 @@
 .post-content blockquote > p {
    margin: 0;
    padding: 0;
+}
+
+.post-conent hr {
+   display: none;
 }

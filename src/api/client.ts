@@ -1,7 +1,7 @@
 import Store from '../store';
 import { Earth } from '@satellite-earth/core';
 import Client from '@satellite-earth/client';
-import { addPublications, publicationComplete } from '../actions';
+import { addEpochs, addPublications, epochComplete, publicationComplete } from '../actions';
 import { Torrent } from './satellite';
 import axios from 'axios';
 import {
@@ -73,7 +73,18 @@ const EventMapper: Record<
    contact: (response, params) => {
       response = response as ContactEvent;
       Store.dispatch(addPublications(response.data.current.signals, response.data.current.number));
-      console.log(response.data);
+      Store.dispatch(addEpochs(response.data.history));
+
+      for (const epoch of response.data.history) {
+         client.load(epoch, {
+            directDownload: true,
+            eventParams: {
+               alias: 'satellite',
+               isEpoch: true,
+            },
+         });
+         break;
+      }
    },
    contact_failed: (response, params) => {
       response = response as ContactFailedEvent;
@@ -87,7 +98,17 @@ const EventMapper: Record<
    torrent_complete: (response, params) => {
       response = response as TorrentCompleteEvent;
       const data = response.data;
-      if (params.isPublication) {
+
+      if (params.isEpoch) {
+         const { epochs } = Store.getState();
+         for (let epoch of epochs) {
+            if (epoch.infoHash === data.torrent.infoHash) {
+               Store.dispatch(epochComplete(epoch, data.data, params));
+               // break to only load one, we could load multiple or all if we want
+               break;
+            }
+         }
+      } else if (params.isPublication) {
          const { publications } = Store.getState();
 
          // When a publication torrent completes, first check if the torrent
@@ -134,11 +155,6 @@ const client = new Client(
    (event: EventNames, data: EventUnion, params: Record<string, any>) => {
       const fn = EventMapper[event];
       if (fn) fn({ type: event, data: data }, params);
-      else {
-         console.log(data);
-         console.log(event);
-         console.log(params);
-      }
    },
    {
       getWebseed,
