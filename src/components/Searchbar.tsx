@@ -1,46 +1,46 @@
-import '../style/Searchbar.css';
+import { ChangeEvent } from 'react';
 import { connect, ConnectedProps } from 'react-redux';
 import { Dispatch } from 'redux';
+import { filterPublications as filterPublicationsAction } from '../actions';
 import { GlobalState } from '../reducers';
-import { filterPublications } from '../actions';
-import { ChangeEvent } from 'react';
+import '../style/Searchbar.css';
 
 function Searchbar({ actions: { filterPublications } }: PropsFromRedux) {
-   let searchTerms: string[] = [];
-   return (
-      <div className="searchbar">
-         <input
-            onChange={(event: ChangeEvent<HTMLInputElement>) => {
-               searchTerms = event.target.value.split(';').map((term) => term.trim());
-            }}
-            type="text"
-            placeholder="Search. Seperate terms with ';'."
-            name="search"
-            onKeyUp={(event: React.KeyboardEvent) => {
-               if (event.key === 'Enter') {
-                  filterPublications(searchTerms);
-               }
-            }}
-         />
-         <button
-            type="button"
-            onClick={() => {
-               filterPublications(searchTerms);
-            }}
-         >
-            <i className="fa fa-search" />
-         </button>
-      </div>
-   );
+    let searchTerms: string[] = [];
+    return (
+        <div className="searchbar">
+            <input
+                onChange={(event: ChangeEvent<HTMLInputElement>) => {
+                    searchTerms = event.target.value.split(';').map(term => term.trim());
+                }}
+                type="text"
+                placeholder="Search. Seperate terms with ';'."
+                name="search"
+                onKeyUp={(event: React.KeyboardEvent) => {
+                    if (event.key === 'Enter') {
+                        filterPublications(searchTerms);
+                    }
+                }}
+            />
+            <button
+                type="button"
+                onClick={() => {
+                    filterPublications(searchTerms);
+                }}
+            >
+                <i className="fa fa-search" />
+            </button>
+        </div>
+    );
 }
 const mapStateToProps = (state: GlobalState) => ({});
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
-   actions: {
-      filterPublications: (searchTerms: string[]) => {
-         dispatch(filterPublications(searchTerms));
-      },
-   },
+    actions: {
+        filterPublications: (searchTerms: string[]) => {
+            dispatch(filterPublicationsAction(searchTerms));
+        }
+    }
 });
 
 const connector = connect(mapStateToProps, mapDispatchToProps);
